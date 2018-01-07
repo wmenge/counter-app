@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html class="mdc-typography">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Cool Soundboard">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, user-scalable=no">
+    <!--<meta name="apple-mobile-web-app-capable" content="yes">-->
+    <title>Event tracker</title>
+
+    <link rel="apple-touch-icon" href="apple-touch-icon-iphone.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="touch-icon-ipad.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="touch-icon-iphone-retina.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="touch-icon-ipad-retina.png">
+
+    <!-- import reset material icons, fonts and vue-mdc-adapter stylesheets -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css">
+    <link rel="stylesheet" href="node_modules/material-components-web/dist/material-components-web.css">
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" type="text/css">
+
+    <!-- import vue and then vue-mdc-adapter -->
+    <script src="https://unpkg.com/vue"></script>
+    <script src="https://unpkg.com/vue-mdc-adapter"></script>
+    <script src="node_modules/moment/moment.js"></script>
+    <script src="app.js"></script>
+
+  </head>
+  <style>
+    .app {
+      margin: 0px;
+    }
+
+    .mdc-button {
+      min-width: 0px;
+
+    }
+
+    .mdc-list-item__end-detail {
+      width: auto;
+    }
+
+    .app-fab--absolute {
+      position: fixed;
+      bottom: 1rem;
+      right: 1rem;
+    }
+
+    @media(min-width: 1024px) {
+      .app-fab--absolute {
+        bottom: 1.5rem;
+        right: 1.5rem;
+      }
+    }
+
+  </style>
+  <body class="app" onload="init()">
+
+  <span id="app">
+
+    <mdc-toolbar>
+      <mdc-toolbar-row>
+        <mdc-toolbar-section align-start >
+          <mdc-toolbar-menu-icon event="toggle-drawer"></mdc-toolbar-menu-icon>
+          <mdc-toolbar-title>Counter</mdc-toolbar-title>
+        </mdc-toolbar-section>
+      </mdc-toolbar-row>
+    </mdc-toolbar>
+
+  <mdc-drawer slot="drawer" toggle-on="toggle-drawer">
+    <mdc-drawer-list>
+        <mdc-drawer-item start-icon="home" href="/">Home</mdc-drawer-item>
+        <mdc-drawer-item start-icon="input" href="/import.html">Import</mdc-drawer-item>
+        <mdc-drawer-item start-icon="send" href="/export.html">Export</mdc-drawer-item>
+    </mdc-drawer-list>
+  </mdc-drawer>
+
+  <main class="content" >
+
+    <ul class="mdc-list mdc-list--two-line mdc-list--avatar-list two-line-avatar-text-icon-demo">
+
+      <counter-item
+        v-for="item in items"
+        v-bind:item="item"
+        v-bind:key="item.id"
+        inline-template>
+        <!-- Vue component template seems to need a single child containing all elements -->
+        <!-- other direct childs seem to be ignored -->
+        <span>
+
+          <li class="mdc-list-item">
+
+            <span class="mdc-list-item__text">
+              {{ item.text }}
+              <span class="mdc-list-item__text__secondary">{{ detailLabel }}</span>
+            </span>
+            <span class="mdc-list-item__end-detail">
+            <mdc-button @click="increment" raised>+</mdc-button>
+            <mdc-button @click="decrement" raised>-</mdc-button>
+            </span>
+          </li>
+          <li role="separator" class="mdc-list-divider"></li>
+
+        </span>
+      </counter-item>
+
+    </ul>
+
+    </main>
+
+    <mdc-fab fixed icon="add" @click="showAddDialog"></mdc-fab>
+  
+    <mdc-dialog ref="dialog" title="New Item" accept="OK" cancel="Cancel"
+      @accept="onAddAccept">
+      <mdc-textfield v-model="newItem.text" label="Description" />
+    </mdc-dialog>
+
+  </span>
+
+  </body>
+</html>
